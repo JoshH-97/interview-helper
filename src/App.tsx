@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import FormComponent from './components/FormComponent';
+import QuestionComponent from './components/QuestionComponent';
+import Header from './components/Header';
 
 function App() {
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formData, setFormData] = useState<{ level: string; tech: string } | null>(null);
+
+  const handleFormSubmit = (data: { level: string; tech: string }) => {
+    setFormSubmitted(true);
+    setFormData(data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='h-screen bg-black'>
+      <Header />
+      {formSubmitted && formData ? (
+        <QuestionComponent level={formData.level} tech={formData.tech} />
+      ) : (
+        <FormComponent onFormSubmit={handleFormSubmit} />
+      )}
     </div>
   );
 }

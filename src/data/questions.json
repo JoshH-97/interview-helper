@@ -1,0 +1,34 @@
+{
+    "junior": {
+      "react": [
+        "Question 1 for junior React",
+        "Question 2 for junior React"
+      ],
+      "dotnet": [
+        "Question 1 for junior .NET",
+        "Question 2 for junior .NET"
+      ]
+    },
+    "mid": {
+      "react": [
+        "Question 1 for mid React",
+        "Question 2 for mid React"
+      ],
+      "dotnet": [
+        "Question 1 for mid .NET",
+        "Question 2 for mid .NET"
+      ]
+    },
+    "senior": {
+      "react": [
+        "Question 1 for senior React",
+        "Question 2 for senior React"
+      ],
+      "dotnet": [
+        "Question 1 for senior .NET",
+        "Question 2 for senior .NET"
+
+      ]
+    }
+  }
+  
