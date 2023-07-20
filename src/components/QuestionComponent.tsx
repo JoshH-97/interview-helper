@@ -1,7 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import RadioButtons from "./RadioButtons";
 import questionsData from "../data/questionsdata.json";
-import Card from "./Card";
+import Card from "./UI/Card";
+
+type SelectedValues = {
+  [key: number]: string; 
+};
 
 function QuestionComponent({ level, tech }: { level: string; tech: string }) {
   const questions = (questionsData as {
@@ -9,25 +13,37 @@ function QuestionComponent({ level, tech }: { level: string; tech: string }) {
       [key: string]: string[];
     };
   })[level][tech];
-  const [selectedValues, setSelectedValues] = useState({});
 
-  const handleValueChange = (rowId: any, value: any) => {
+  const [selectedValues, setSelectedValues] = useState<SelectedValues>({});
+  const [totalScore, setTotalScore] = useState(0);
+
+  const handleValueChange = (rowId: number, value: string) => {
     setSelectedValues((prevSelectedValues) => ({
       ...prevSelectedValues,
       [rowId]: value,
     }));
   };
-  
-  const TABLE_HEAD = ['Question', 'Score'];
-  const classes = 'p-5';
+
+  const calculateTotalScore = () => {
+    let total = 0;
+    for (const key in selectedValues) {
+      total += parseInt(selectedValues[key]);
+    }
+    setTotalScore(total);
+  };
+
+  const TABLE_HEAD = ["Question", "Score"];
+  const classes = "p-5";
   return (
     <Card>
-      <h1 className="capitalize flex justify-center text-4 text-2xl">{tech}-{level}</h1>
+      <h1 className="capitalize flex justify-center text-4 text-2xl">
+        {tech}-{level}
+      </h1>
       <table>
-      <thead>
+        <thead>
           <tr>
-            {TABLE_HEAD.map(head => (
-              <th key={head} className='border-b border-blue-gray-100 bg-blue-gray-50 p-4'>
+            {TABLE_HEAD.map((head) => (
+              <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                 {head}
               </th>
             ))}
@@ -38,13 +54,15 @@ function QuestionComponent({ level, tech }: { level: string; tech: string }) {
             <tr key={index}>
               <td className={classes}>{question}</td>
               <td className={classes}>
-                <RadioButtons rowId={index} onValueChange={handleValueChange} {...selectedValues || null}/>
+                <RadioButtons rowId={index} onValueChange={handleValueChange} selectedValue={selectedValues[index] || ''} />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button className='text-white bg-orange-600 hover:bg-orange-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2'>Submit</button>
+      <button className="text-white bg-orange-600 hover:bg-orange-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onClick={calculateTotalScore}>
+        Submit ({totalScore})
+      </button>
     </Card>
   );
 }

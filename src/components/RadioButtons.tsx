@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface RadioButtonsProps {
-  rowId: number;
+  rowId: number; 
   onValueChange: (rowId: number, value: string) => void;
+  selectedValue: string;
 }
 
-export default function RadioButtons({ rowId, onValueChange }: RadioButtonsProps) {
-  const [selectedValue, setSelectedValue] = useState('');
+export default function RadioButtons({ rowId, onValueChange, selectedValue }: RadioButtonsProps) {
+  const [selectedValueInternal, setSelectedValueInternal] = useState(selectedValue);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+    const newValue = event.target.value;
+    setSelectedValueInternal(newValue);
+    onValueChange(rowId, newValue);
   };
 
   const radioGroupName = `radioGroup-${rowId}`;
@@ -23,7 +26,7 @@ export default function RadioButtons({ rowId, onValueChange }: RadioButtonsProps
           value="1"
           name={radioGroupName}
           className="bg-red-600 w-4 h-4"
-          checked={selectedValue === '1'}
+          checked={selectedValueInternal === "1"}
           onChange={handleChange}
         />
       </div>
@@ -34,7 +37,7 @@ export default function RadioButtons({ rowId, onValueChange }: RadioButtonsProps
           value="2"
           name={radioGroupName}
           className="bg-orange-600 w-4 h-4"
-          checked={selectedValue === '2'}
+          checked={selectedValueInternal === "2"}
           onChange={handleChange}
         />
       </div>
@@ -45,7 +48,7 @@ export default function RadioButtons({ rowId, onValueChange }: RadioButtonsProps
           value="3"
           name={radioGroupName}
           className="w-4 h-4"
-          checked={selectedValue === '3'}
+          checked={selectedValueInternal === "3"}
           onChange={handleChange}
         />
       </div>
