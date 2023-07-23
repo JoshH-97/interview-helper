@@ -9,57 +9,36 @@ type FormValues = {
 };
 
 function FormComponent({ onFormSubmit }: { onFormSubmit: (data: FormValues) => void }) {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [level, setLevel] = useState('');
-  const [tech, setTech] = useState('');
-  const [errors, setErrors] = useState({
-    name: '',
-    age: '',
-    level: '',
-    tech: '',
-  });
+  const [name, setName] = useState(' ');
+  const [age, setAge] = useState(' ');
+  const [level, setLevel] = useState(' ');
+  const [tech, setTech] = useState(' ');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    let error = false;
 
-    const newErrors = {
-      name: name === '' ? 'Name is required' : '',
-      age: age === '' ? 'Age is required' : '',
-      level: level === '' ? 'Level is required' : '',
-      tech: tech === '' ? 'Technology is required' : '',
-    };
-
-    setErrors(newErrors);
-
-    if (Object.values(newErrors).some(error => error !== '')) {
-      return;
+    if(!name.trim()){
+      setName('');
+      error = true;
     }
-
-    setErrors({ name: '', age: '', level: '', tech: '' });
+    if(!age.trim()){
+      setAge('');
+      error = true;
+    }
+    if(!level.trim()){
+      setLevel('');
+      error = true;
+    }
+    if(!tech.trim()){
+      setTech('');
+      error = true;
+    }
+    if(error)
+      return
     onFormSubmit({ name, age, tech, level });
   };
 
-  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-
-    setErrors({ ...errors, name: '' });
-  };
-
-  const handleChangeAge = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAge(e.target.value);
-    setErrors({ ...errors, age: '' });
-  };
-
-  const handleChangeTech = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTech(e.target.value);
-    setErrors({ ...errors, tech: '' });
-  };
-
-  const handleChangeLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLevel(e.target.value);
-    setErrors({ ...errors, level: '' });
-  };
 
   return (
     <Card>
@@ -69,20 +48,20 @@ function FormComponent({ onFormSubmit }: { onFormSubmit: (data: FormValues) => v
           type='text'
           id='name'
           value={name}
-          onChange={handleChangeName}
+          onChange={(e)=>setName(e.target.value)}
           className='block mb-2 text-sm font-normal text-white bg-gray-800 border rounded-lg border-gray-700 p-3 w-96'
         />
-        {errors.name && <p className='text-red-500 text-sm'>{errors.name}</p>}
+        {!name && <p className='text-red-500 text-sm'>Name is required</p>}
 
         <label htmlFor='age'>Age</label>
         <input
           type='text'
           id='age'
           value={age} 
-          onChange={handleChangeAge}
+          onChange={(e)=>setAge(e.target.value)}
           className='block mb-2 text-sm font-normal text-white bg-gray-800 border rounded-lg border-gray-700 p-3 w-96'
         />
-        {errors.age && <p className='text-red-500 text-sm'>{errors.age}</p>}
+        {!age && <p className='text-red-500 text-sm'>Age is required</p>}
 
         <div className='flex gap-4'>
           <div className='w-1/2'>
@@ -90,14 +69,14 @@ function FormComponent({ onFormSubmit }: { onFormSubmit: (data: FormValues) => v
             <select
               id='tech'
               value={tech}
-              onChange={handleChangeTech}
+              onChange={(e)=>setTech(e.target.value)}
               className='block mb-2 text-sm font-normal text-white bg-gray-800 border rounded-lg border-gray-700 p-3 w-full'
             >
               <option value=''>Select technology</option>
               <option value='react'>React</option>
               <option value='dotnet'>.NET</option>
             </select>
-            {errors.tech && <p className='text-red-500 text-sm'>{errors.tech}</p>}
+            {!tech && <p className='text-red-500 text-sm'>Tech is required</p>}
           </div>
 
           <div className='w-1/2'>
@@ -105,7 +84,7 @@ function FormComponent({ onFormSubmit }: { onFormSubmit: (data: FormValues) => v
             <select
               id='level'
               value={level}
-              onChange={handleChangeLevel}
+              onChange={(e)=>setLevel(e.target.value)}
               className='block mb-2 text-sm font-normal text-white bg-gray-800 border rounded-lg border-gray-700 p-3 w-full'
             >
               <option value=''>Select level</option>
@@ -113,7 +92,7 @@ function FormComponent({ onFormSubmit }: { onFormSubmit: (data: FormValues) => v
               <option value='mid'>Mid</option>
               <option value='senior'>Senior</option>
             </select>
-            {errors.level && <p className='text-red-500 text-sm'>{errors.level}</p>}
+            {!level && <p className='text-red-500 text-sm'>Level is required</p>}
           </div>
         </div>
 

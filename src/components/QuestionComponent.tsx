@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import RadioButtons from "./RadioButtons";
-import questionsData from "../data/questionsdata.json";
-import Card from "./UI/Card";
+import React, { useState } from 'react';
+import RadioButtons from './RadioButtons';
+import questionsData from '../data/questionsdata.json';
+import Card from './UI/Card';
 
-type SelectedValues = {
-  [key: number]: string; 
+export type SelectedValues = {
+  [key: number]: string;
 };
 
-function QuestionComponent({ level, tech }: { level: string; tech: string }) {
+type QuestionComponentProps = {
+  level: string;
+  tech: string;
+  onValueChange: (rowId: number, value: string) => void;
+  onSubmit: (totalScore: number) => void; 
+};
+function QuestionComponent({ level, tech, onSubmit }: QuestionComponentProps) {
   const questions = (questionsData as {
     [key: string]: {
       [key: string]: string[];
@@ -15,7 +21,6 @@ function QuestionComponent({ level, tech }: { level: string; tech: string }) {
   })[level][tech];
 
   const [selectedValues, setSelectedValues] = useState<SelectedValues>({});
-  const [totalScore, setTotalScore] = useState(0);
 
   const handleValueChange = (rowId: number, value: string) => {
     setSelectedValues((prevSelectedValues) => ({
@@ -24,14 +29,13 @@ function QuestionComponent({ level, tech }: { level: string; tech: string }) {
     }));
   };
 
-  const calculateTotalScore = () => {
+  const handleSubmit = () => {
     let total = 0;
     for (const key in selectedValues) {
       total += parseInt(selectedValues[key]);
     }
-    setTotalScore(total);
+    onSubmit(total);
   };
-
   const TABLE_HEAD = ["Question", "Score"];
   const classes = "p-5";
   return (
@@ -60,9 +64,12 @@ function QuestionComponent({ level, tech }: { level: string; tech: string }) {
           ))}
         </tbody>
       </table>
-      <button className="text-white bg-orange-600 hover:bg-orange-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" onClick={calculateTotalScore}>
-        Submit ({totalScore})
-      </button>
+        <button
+          className="text-white bg-orange-600 hover:bg-orange-700 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
     </Card>
   );
 }

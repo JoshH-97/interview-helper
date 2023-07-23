@@ -1,21 +1,34 @@
-import Card from "./UI/Card";
+import React from 'react';
+import Card from './UI/Card';
 
-interface ResultComponentProps {
-  formData: { name: string, age: string, level: string; tech: string };
-  totalScore: number;
-}
+type Question = {
+  [key: number]: string;
+};
 
-const Results = ({ formData, totalScore }: ResultComponentProps) => {
+type Form = {
+  name: string;
+  age: string;
+  level: string;
+  tech: string;
+};
+
+type ResultsProps = {
+  data: {
+    form: Form;
+    questions: Question;
+    totalScore: number;
+  };
+};
+
+const Results: React.FC<ResultsProps> = ({ data }) => {
   return (
     <Card>
-    <div className="text-white">
-      <h1>Result</h1>
-      <p>Name: {formData.name}</p>
-      <p>Age: {formData.age}</p>
-      <p>Level: {formData.level}</p>
-      <p>Tech: {formData.tech}</p>
-      <p>Total Score: {totalScore}</p>
-    </div>
+      <h2>Results:</h2>
+      <p>Name: {data.form.name}</p>
+      <p>Age: {data.form.age}</p>
+      <p>Tech: {data.form.tech}</p>
+      <p>Level: {data.form.level}</p>
+      <p>Total Score: {data.totalScore}</p>
     </Card>
   );
 };
