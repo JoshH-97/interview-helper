@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import RadioButtons from './RadioButtons';
 import questionsData from '../data/questionsdata.json';
 import Card from './UI/Card';
+import RadioV2 from './RadioV2';
 
 export type SelectedValues = {
   [key: number]: string;
@@ -58,7 +58,7 @@ function QuestionComponent({ level, tech, onSubmit }: QuestionComponentProps) {
             <tr key={index}>
               <td className={classes}>{question}</td>
               <td className={classes}>
-                <RadioButtons rowId={index} onValueChange={handleValueChange} selectedValue={selectedValues[index] || ''} />
+                <RadioV2 rowId={index} onValueChange={handleValueChange} selectedValue={selectedValues[index] || ''} />
               </td>
             </tr>
           ))}
