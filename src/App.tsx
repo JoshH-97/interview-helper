@@ -18,6 +18,7 @@ function App() {
   const [selectedValues, setSelectedValues] = useState<SelectedValues>({});
   const [totalScore, setTotalScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  const [comments, setComments] = useState('');
 
   const handleFormSubmit = (data: FormData) => {
     setFormSubmitted(true);
@@ -25,28 +26,29 @@ function App() {
   };
 
   const handleValueChange = (rowId: number, value: string) => {
-    setSelectedValues((prevSelectedValues) => ({
+    setSelectedValues(prevSelectedValues => ({
       ...prevSelectedValues,
       [rowId]: value,
     }));
   };
 
-  const handleQuestionSubmit = (totalScore: number) => {
+  const handleQuestionSubmit = (comments: string, totalScore: number ) => {
     setTotalScore(totalScore);
+    setComments(comments);
     setShowResults(true);
   };
 
   return (
-    <div className='h-screen bg-black'>
+    <div>
       <Header />
       {!formSubmitted ? (
         <FormComponent onFormSubmit={handleFormSubmit} />
-      ) : !showResults ? ( 
+      ) : !showResults ? (
         <QuestionComponent
           level={formData!.level}
           tech={formData!.tech}
           onValueChange={handleValueChange}
-          onSubmit={handleQuestionSubmit} 
+          onSubmit={handleQuestionSubmit}
         />
       ) : (
         <Results
@@ -54,6 +56,7 @@ function App() {
             form: formData!,
             questions: selectedValues,
             totalScore: totalScore,
+            comments: comments, 
           }}
         />
       )}
